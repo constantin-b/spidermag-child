@@ -21,7 +21,11 @@ if( !empty( $spidermag_singel_layout ) && $spidermag_singel_layout =='leftsideba
 }
 ?>
 
-<?php do_action( 'breadcrumb_add_breadcrumb', 10 ); ?>
+<div class="container">
+    <div class="clearfix">
+        <?php spidermag_breadcrumbs(); ?><!-- breadcrumbs call function end -->
+    </div>
+</div>
 
 <?php
 /* Single Post Loops Start */
