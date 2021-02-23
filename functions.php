@@ -1,12 +1,27 @@
 <?php
 /**
- *
+ * Enqueue theme styling
  */
-function spidermag_scripts() {
-	// enqueue style
-	wp_enqueue_style('parent-theme', get_template_directory_uri() .'/style.css');
+function spidermag_theme_enqueue_styles() {
+
+	$parenthandle = 'parent-style';
+	$theme = wp_get_theme();
+	wp_enqueue_style( $parenthandle, get_template_directory_uri() . '/style.css',
+		array(
+			'bootstrap',
+			'font-awesome',
+			'ionicons',
+			'animate'
+		),
+		$theme->parent()->get('Version')
+	);
+
+	wp_enqueue_style( 'child-style', get_stylesheet_uri(),
+		array( $parenthandle ),
+		$theme->get('Version')
+	);
 }
-add_action('wp_enqueue_scripts', 'spidermag_scripts');
+add_action( 'wp_enqueue_scripts', 'spidermag_theme_enqueue_styles' );
 
 /**
  * @param string $which Which type to compare with. Possible values are: classicpost, screenwidthpost or standardpost
