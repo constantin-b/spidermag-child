@@ -11,15 +11,10 @@
 <div id="post-<?php the_ID(); ?>" <?php post_class('col-sm-16 wow fadeInDown animated'); ?> data-wow-delay="0.5s">
   <div class="row">
   <?php
-      if( function_exists( 'cvwp_has_video' ) && cvwp_has_video() ){
-          get_template_part( 'template-parts/featured', 'video' );
-      }else{
-	      $spidermag_post_settings_metalayouts = esc_attr(get_post_meta( $post->ID, 'spidermag_post_settings_layouts', true ));
-	      if( !empty( $spidermag_post_settings_metalayouts ) && $spidermag_post_settings_metalayouts  == 'classicpost' ) {
-		      if ( has_post_thumbnail() ) {
-			      get_template_part( 'template-parts/featured', 'image' );
-		      }
-	      }
+      if( spidermag_is_video_post() && spidermag_is_post_layout( 'classicpost' ) ){
+          get_template_part( 'template-parts/featured', 'video', ['class' => 'cvwp-spidermag-video classic'] );
+      }elseif( spidermag_is_post_layout( 'classicpost' ) && has_post_thumbnail() ) {
+          get_template_part( 'template-parts/featured', 'image' );
       }
   ?>
     <!-- End Classic Post feature image section -->

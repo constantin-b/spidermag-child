@@ -8,8 +8,6 @@
  */
 get_header();
 
-$spidermag_post_settings_metalayouts = esc_attr(get_post_meta( $post->ID, 'spidermag_post_settings_layouts', true ));
-
 $spidermag_singel_layout = esc_attr( get_post_meta( $post->ID, 'spidermag_page_layouts', true ) );
 if( empty( $spidermag_singel_layout ) ){
     $spidermag_singel_layout = esc_attr(get_theme_mod('spidermag_single_posts_layout','rightsidebar'));
@@ -29,45 +27,28 @@ if( !empty( $spidermag_singel_layout ) && $spidermag_singel_layout =='leftsideba
 /* Single Post Loops Start */
 if ( have_posts() ) : 
   
-  if(!empty($spidermag_post_settings_metalayouts) && $spidermag_post_settings_metalayouts == 'screenwidthpost') :   
-   $image_popup_id = get_post_thumbnail_id();
-   $image_popup_url = wp_get_attachment_url( $image_popup_id );
-  if( has_post_thumbnail() ) { 
-    $image = wp_get_attachment_image_src(get_post_thumbnail_id( get_the_ID() ), 'spidermag-screenwidthpost-image', true); 
-?>
-  <div class="standardpost" style="background-image:url('<?php echo esc_url( $image[0] ); ?>');">
-      <div class="stanterpost-single-post">
-        <h3> <?php the_title(); ?></h3>
-        <div class="text-danger sub-info-bordered">
-          <?php spidermag_single_post_meta(); ?> 
-        </div>
-      </div> <!-- /stanterpost-single-post -->
-  </div><!---/ standard -->
-  <?php } endif; ?><!-- End Screen Width Post feature image section -->
+  if( spidermag_is_post_layout( 'screenwidthpost' ) ){
+      if( spidermag_is_video_post() ){
+	      get_template_part( 'template-parts/featured', 'video', ['class' => 'cvwp-spidermag-video full'] );
+      }elseif( has_post_thumbnail() ) {
+	      get_template_part( 'template-parts/featured', 'image-full' );
+      }
+  }
+?><!-- End Screen Width Post feature image section -->
 
 <!-- End Other Remaining Post feature image section -->
 <div class="container blogging-style">
   <div class="row">
     <!-- Start Standard Post feature image section -->
     <?php
-     if(!empty($spidermag_post_settings_metalayouts) && $spidermag_post_settings_metalayouts == 'standardpost') :   
-       $image_popup_id = get_post_thumbnail_id();
-       $image_popup_url = wp_get_attachment_url( $image_popup_id );
-       if( has_post_thumbnail() ) { 
-    ?>
-      <div class="col-sm-16">
-          <?php $image = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'spidermag-featured-image', true); ?>
-          <div class="standardpost" style="background-image:url('<?php echo esc_url($image[0]); ?>'); ">
-              <div class="stanterpost-single-post">
-                <h3> <?php the_title(); ?></h3>
-                <div class="text-danger sub-info-bordered">
-                  <?php spidermag_single_post_meta(); ?> 
-                </div>
-              </div> <!-- /stanterpost-single-post -->
-          </div><!---/ standard -->
-      </div>  <!---/ col-sm-16 -->
-    <?php } endif; ?><!-- End Standard Post feature image section -->
-
+     if( spidermag_is_post_layout( 'standardpost' ) ) {
+	     if( spidermag_is_video_post() ){
+		     get_template_part( 'template-parts/featured', 'video', ['class' => 'cvwp-spidermag-video standard'] );
+	     }elseif( has_post_thumbnail() ) {
+		     get_template_part( 'template-parts/featured', 'image-standard' );
+	     }
+     }
+    ?><!-- End Standard Post feature image section -->
 
     <?php  if ($spidermag_singel_layout == 'bothsidebar' || $spidermag_singel_layout == 'leftsidebar') : ?>
      
